@@ -1,0 +1,154 @@
+
+<h2 class="sr-only">Aug/Sept design team pairings showing overlap windows on a UTC timeline</h2>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: transparent; color: var(--text); padding: 20px; }
+
+.app-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+.app-title { font-size: 17px; font-weight: 700; }
+.app-meta { font-size: 12px; color: var(--text-muted, #888); }
+
+.legend { display: flex; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-muted, #888); }
+.legend-swatch { width: 22px; height: 6px; border-radius: 3px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 9px; }
+
+.card { background: var(--card-bg, rgba(128,128,128,0.07)); border: 1px solid var(--border, rgba(128,128,128,0.15)); border-radius: 12px; padding: 13px 14px; }
+
+.card-top { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
+.pair-num { font-size: 10px; font-weight: 700; color: var(--text-muted, #888); min-width: 18px; padding-top: 3px; }
+.names { flex: 1; min-width: 0; }
+.name-row { display: flex; align-items: center; gap: 5px; line-height: 1.9; }
+.name { font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.name.dim { opacity: 0.65; font-weight: 500; }
+.tz { font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 4px; letter-spacing: 0.04em; flex-shrink: 0; }
+.tz.t1 { background: rgba(56,189,248,0.15); color: #38bdf8; }
+.tz.t2 { background: rgba(167,139,250,0.15); color: #a78bfa; }
+.pill { font-size: 11px; font-weight: 700; color: #f97316; background: rgba(249,115,22,0.12); padding: 3px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+
+.axis { display: flex; justify-content: space-between; margin-bottom: 2px; padding: 0 1px; }
+.ax { font-size: 8px; color: var(--text-muted, #888); opacity: 0.55; }
+.track { position: relative; height: 30px; background: var(--bg, rgba(128,128,128,0.08)); border-radius: 5px; overflow: hidden; margin-bottom: 7px; }
+.bar { position: absolute; height: 9px; border-radius: 3px; }
+.bar.b1 { top: 4px; background: #38bdf8; opacity: 0.55; }
+.bar.b2 { top: 17px; background: #a78bfa; opacity: 0.55; }
+.ov { position: absolute; top: 0; bottom: 0; background: rgba(249,115,22,0.18); border-left: 2px solid rgba(249,115,22,0.55); border-right: 2px solid rgba(249,115,22,0.55); }
+
+.times { font-size: 10.5px; color: var(--text-muted, #888); line-height: 1.6; }
+.tw { display: inline-block; margin-right: 6px; }
+.tw::before { content: '↔ '; color: #f97316; font-size: 10px; }
+</style>
+
+<div class="app-header">
+  <span class="app-title">Aug / Sept Pairings</span>
+  <span class="app-meta">19 pairs · timeline in UTC</span>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-swatch" style="background:#38bdf8;opacity:.6"></div>Person 1</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#a78bfa;opacity:.6"></div>Person 2</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:rgba(249,115,22,.45)"></div>Overlap window</div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+const S = 360, E = 1380, R = E - S;
+const p = m => ((m - S) / R * 100).toFixed(2) + '%';
+const w = (a,b) => ((b - a) / R * 100).toFixed(2) + '%';
+
+const data = [
+  { id:1,  p1:{n:"Rich Vaughan",         tz:"BST",  s:480, e:1050},
+           p2:{n:"Ethan Grove",           tz:"ET",   s:720, e:1290},
+           t:["ET: 8:00 AM – 1:30 PM","BST: 1:00 PM – 6:30 PM"] },
+  { id:2,  p1:{n:"Christina Gibbons",    tz:"ET",   s:720, e:1260},
+           p2:{n:"Yanni Xiang",           tz:"CT",   s:780, e:1350},
+           t:["CT: 8:00 AM – 4:00 PM","ET: 9:00 AM – 5:00 PM"] },
+  { id:3,  p1:{n:"Abigail Ramirez-Kumar",tz:"CT",   s:780, e:1260},
+           p2:{n:"Nermeen Atef",          tz:"UTC+3",s:420, e:900 },
+           t:["CT: 8:00 AM – 10:00 AM","UTC+3: 4:00 PM – 6:00 PM"] },
+  { id:4,  p1:{n:"Shannon Partlow",      tz:"CT",   s:780, e:1320},
+           p2:{n:"Hayden Ohmes",          tz:"CT",   s:780, e:1350},
+           t:["CT: 8:00 AM – 5:00 PM"] },
+  { id:5,  p1:{n:"Craig Zheng",          tz:"ET",   s:720, e:1290},
+           p2:{n:"Richard Malachowski",   tz:"CEST", s:360, e:930 },
+           t:["ET: 8:00 AM – 11:30 AM","CEST: 2:00 PM – 5:30 PM"] },
+  { id:6,  p1:{n:"Holly Nicol",          tz:"BST",  s:480, e:990 },
+           p2:{n:"Charlotte Bevan",       tz:"BST",  s:420, e:990 },
+           t:["BST: 9:00 AM – 5:30 PM"] },
+  { id:7,  p1:{n:"Andy Lang",            tz:"BST",  s:420, e:990 },
+           p2:{n:"Jason McKelvey",        tz:"CT",   s:780, e:1350},
+           t:["CT: 8:00 AM – 11:30 AM","BST: 2:00 PM – 5:30 PM"] },
+  { id:8,  p1:{n:"Matt Allison",         tz:"BST",  s:480, e:990 },
+           p2:{n:"Tim Damitz",            tz:"ET",   s:720, e:1290},
+           t:["ET: 8:00 AM – 12:30 PM","BST: 1:00 PM – 5:30 PM"] },
+  { id:9,  p1:{n:"Amanda Jahn",          tz:"GMT",  s:510, e:1050},
+           p2:{n:"James Orbell",          tz:"BST",  s:420, e:990 },
+           t:["GMT: 8:30 AM – 4:30 PM","BST: 9:30 AM – 5:30 PM"] },
+  { id:10, p1:{n:"Qa'id Jacobs",         tz:"CET",  s:480, e:960 },
+           p2:{n:"Charlie Nolan",         tz:"BST",  s:420, e:990 },
+           t:["BST: 9:00 AM – 5:00 PM","CET: 9:00 AM – 5:00 PM"] },
+  { id:11, p1:{n:"Dana Krueger",         tz:"CT",   s:750, e:1260},
+           p2:{n:"Vicki Anderson",        tz:"BST",  s:420, e:990 },
+           t:["CT: 7:30 AM – 11:30 AM","BST: 1:30 PM – 5:30 PM"] },
+  { id:12, p1:{n:"Elissa Murray",        tz:"ET",   s:780, e:1260},
+           p2:{n:"Nicole Rosolin",        tz:"CEST", s:360, e:930 },
+           t:["ET: 9:00 AM – 11:30 AM","CEST: 3:00 PM – 5:30 PM"] },
+  { id:13, p1:{n:"Sergio Riquelme",      tz:"BST",  s:480, e:990 },
+           p2:{n:"Renana Toren",          tz:"BST",  s:420, e:990 },
+           t:["BST: 9:00 AM – 5:30 PM"] },
+  { id:14, p1:{n:"David Kinoranyi",      tz:"CET",  s:510, e:1020},
+           p2:{n:"Kyle Gibbings",         tz:"BST",  s:480, e:960 },
+           t:["BST: 9:30 AM – 5:00 PM","CET: 9:30 AM – 5:00 PM"] },
+  { id:15, p1:{n:"Dan Hassenplug",       tz:"CT",   s:780, e:1350},
+           p2:{n:"Luis Cantón",           tz:"CEST", s:360, e:930 },
+           t:["CT: 8:00 AM – 10:30 AM","CEST: 3:00 PM – 5:30 PM"] },
+  { id:16, p1:{n:"Hannah Monk",          tz:"CT",   s:780, e:1350},
+           p2:{n:"Ale Cilea",             tz:"CEST", s:360, e:930 },
+           t:["CT: 8:00 AM – 10:30 AM","CEST: 3:00 PM – 5:30 PM"] },
+  { id:17, p1:{n:"Mika Dael",            tz:"CEST", s:360, e:930 },
+           p2:{n:"Lea Sarris",            tz:"CT",   s:780, e:1350},
+           t:["CT: 8:00 AM – 10:30 AM","CEST: 3:00 PM – 5:30 PM"] },
+  { id:18, p1:{n:"Thomas McClure",       tz:"GMT",  s:540, e:1020},
+           p2:{n:"Elizabeth Renda",       tz:"ET",   s:720, e:1290},
+           t:["ET: 8:00 AM – 1:00 PM","GMT: 12:00 PM – 5:00 PM"] },
+  { id:19, p1:{n:"Carly Kendeigh",       tz:"CT",   s:720, e:1260},
+           p2:{n:"Aakriti Chandra",       tz:"ET",   s:720, e:1290},
+           t:["CT: 7:00 AM – 4:00 PM","ET: 8:00 AM – 5:00 PM"] },
+];
+
+const axLabels = [{h:6,l:'6a'},{h:8,l:'8a'},{h:10,l:'10a'},{h:12,l:'12p'},{h:14,l:'2p'},{h:16,l:'4p'},{h:18,l:'6p'},{h:20,l:'8p'},{h:22,l:'10p'}];
+const grid = document.getElementById('grid');
+
+data.forEach(d => {
+  const os = Math.max(d.p1.s, d.p2.s);
+  const oe = Math.min(d.p1.e, d.p2.e);
+  const hrs = (oe - os) / 60;
+  const hLabel = Number.isInteger(hrs) ? hrs + 'h' : hrs.toFixed(1) + 'h';
+
+  const axHTML = axLabels.map(a => `<span class="ax">${a.l}</span>`).join('');
+  const tHTML = d.t.map(t => `<span class="tw">${t}</span>`).join('');
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <div class="card-top">
+      <span class="pair-num">${d.id}</span>
+      <div class="names">
+        <div class="name-row"><span class="name">${d.p1.n}</span><span class="tz t1">${d.p1.tz}</span></div>
+        <div class="name-row"><span class="name dim">${d.p2.n}</span><span class="tz t2">${d.p2.tz}</span></div>
+      </div>
+      <span class="pill">${hLabel}</span>
+    </div>
+    <div class="axis">${axHTML}</div>
+    <div class="track">
+      <div class="bar b1" style="left:${p(d.p1.s)};width:${w(d.p1.s,d.p1.e)}"></div>
+      <div class="bar b2" style="left:${p(d.p2.s)};width:${w(d.p2.s,d.p2.e)}"></div>
+      <div class="ov" style="left:${p(os)};width:${w(os,oe)}"></div>
+    </div>
+    <div class="times">${tHTML}</div>`;
+  grid.appendChild(card);
+});
+</script>
