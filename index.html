@@ -1,154 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design Team Pairings · Aug / Sept</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-<h2 class="sr-only">Aug/Sept design team pairings showing overlap windows on a UTC timeline</h2>
+    :root {
+      --bg:          #f4f5f7;
+      --surface:     #ffffff;
+      --border:      #e2e5ea;
+      --text:        #1a1d23;
+      --muted:       #6b7280;
+      --track:       #eef0f3;
+      --c1:          #0ea5e9;
+      --c2:          #8b5cf6;
+      --ov:          #f97316;
+      --ov-bg:       rgba(249,115,22,.12);
+      --ov-border:   rgba(249,115,22,.5);
+      --shadow:      0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.05);
+      --shadow-hi:   0 0 0 3px rgba(249,115,22,.2), 0 4px 16px rgba(249,115,22,.15);
+    }
 
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: transparent; color: var(--text); padding: 20px; }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:       #0f1117;
+        --surface:  #1a1d23;
+        --border:   #2a2f3a;
+        --text:     #f1f3f6;
+        --muted:    #8892a0;
+        --track:    #12151c;
+        --shadow:   0 1px 3px rgba(0,0,0,.4);
+        --shadow-hi:0 0 0 3px rgba(249,115,22,.25), 0 4px 16px rgba(249,115,22,.2);
+      }
+    }
 
-.app-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
-.app-title { font-size: 17px; font-weight: 700; }
-.app-meta { font-size: 12px; color: var(--text-muted, #888); }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 32px 24px 60px;
+    }
 
-.legend { display: flex; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
-.legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-muted, #888); }
-.legend-swatch { width: 22px; height: 6px; border-radius: 3px; }
+    /* ── Page header ── */
+    .page-header {
+      max-width: 960px;
+      margin: 0 auto 28px;
+    }
 
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 9px; }
+    .page-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 4px;
+    }
 
-.card { background: var(--card-bg, rgba(128,128,128,0.07)); border: 1px solid var(--border, rgba(128,128,128,0.15)); border-radius: 12px; padding: 13px 14px; }
+    .page-sub {
+      font-size: 13px;
+      color: var(--muted);
+    }
 
-.card-top { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
-.pair-num { font-size: 10px; font-weight: 700; color: var(--text-muted, #888); min-width: 18px; padding-top: 3px; }
-.names { flex: 1; min-width: 0; }
-.name-row { display: flex; align-items: center; gap: 5px; line-height: 1.9; }
-.name { font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.name.dim { opacity: 0.65; font-weight: 500; }
-.tz { font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 4px; letter-spacing: 0.04em; flex-shrink: 0; }
-.tz.t1 { background: rgba(56,189,248,0.15); color: #38bdf8; }
-.tz.t2 { background: rgba(167,139,250,0.15); color: #a78bfa; }
-.pill { font-size: 11px; font-weight: 700; color: #f97316; background: rgba(249,115,22,0.12); padding: 3px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+    .legend {
+      display: flex;
+      gap: 18px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
 
-.axis { display: flex; justify-content: space-between; margin-bottom: 2px; padding: 0 1px; }
-.ax { font-size: 8px; color: var(--text-muted, #888); opacity: 0.55; }
-.track { position: relative; height: 30px; background: var(--bg, rgba(128,128,128,0.08)); border-radius: 5px; overflow: hidden; margin-bottom: 7px; }
-.bar { position: absolute; height: 9px; border-radius: 3px; }
-.bar.b1 { top: 4px; background: #38bdf8; opacity: 0.55; }
-.bar.b2 { top: 17px; background: #a78bfa; opacity: 0.55; }
-.ov { position: absolute; top: 0; bottom: 0; background: rgba(249,115,22,0.18); border-left: 2px solid rgba(249,115,22,0.55); border-right: 2px solid rgba(249,115,22,0.55); }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
 
-.times { font-size: 10.5px; color: var(--text-muted, #888); line-height: 1.6; }
-.tw { display: inline-block; margin-right: 6px; }
-.tw::before { content: '↔ '; color: #f97316; font-size: 10px; }
-</style>
+    .legend-swatch {
+      width: 24px;
+      height: 7px;
+      border-radius: 4px;
+    }
 
-<div class="app-header">
-  <span class="app-title">Aug / Sept Pairings</span>
-  <span class="app-meta">19 pairs · timeline in UTC</span>
-</div>
+    /* ── Finder ── */
+    .finder {
+      max-width: 960px;
+      margin: 0 auto 36px;
+    }
 
-<div class="legend">
-  <div class="legend-item"><div class="legend-swatch" style="background:#38bdf8;opacity:.6"></div>Person 1</div>
-  <div class="legend-item"><div class="legend-swatch" style="background:#a78bfa;opacity:.6"></div>Person 2</div>
-  <div class="legend-item"><div class="legend-swatch" style="background:rgba(249,115,22,.45)"></div>Overlap window</div>
-</div>
+    .finder-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
 
-<div class="grid" id="grid"></div>
+    .pair-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 7px;
+    }
+
+    .pair-btn {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      padding: 9px 12px;
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+      line-height: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 54px;
+    }
+
+    .pair-btn:hover {
+      border-color: var(--ov);
+    }
+
+    .pair-btn.active {
+      border-color: var(--ov);
+      background: var(--ov-bg);
+      box-shadow: 0 0 0 2px rgba(249,115,22,.15);
+    }
+
+    .pb-name1 {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      display: block;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pb-name2 {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pb-name2::before {
+      content: '+ ';
+      color: var(--ov);
+      font-weight: 700;
+    }
+
+    /* ── Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 10px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+      transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s;
+      scroll-margin-top: 24px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .outlook-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      color: var(--muted);
+      text-decoration: none;
+      flex-shrink: 0;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .outlook-btn:hover {
+      background: rgba(0,120,212,.12);
+      color: #0078d4;
+    }
+
+    .outlook-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .card.highlighted {
+      border-color: var(--ov);
+      box-shadow: var(--shadow-hi);
+    }
+
+    .card.dimmed {
+      opacity: 0.28;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 11px;
+    }
+
+    .pair-num {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      min-width: 18px;
+      padding-top: 3px;
+    }
+
+    .names { flex: 1; min-width: 0; }
+
+    .name-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      line-height: 1.95;
+    }
+
+    .name {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .name.dim {
+      opacity: 0.6;
+      font-weight: 500;
+    }
+
+    .tz {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .tz.t1 { background: rgba(14,165,233,.12); color: #0ea5e9; }
+    .tz.t2 { background: rgba(139,92,246,.12); color: #8b5cf6; }
+
+    .pill {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ov);
+      background: var(--ov-bg);
+      padding: 3px 9px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── Timeline ── */
+    .axis {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 1px;
+      margin-bottom: 3px;
+    }
+
+    .ax {
+      font-size: 8px;
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    .track {
+      position: relative;
+      height: 30px;
+      background: var(--track);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 9px;
+    }
+
+    .bar {
+      position: absolute;
+      height: 9px;
+      border-radius: 3px;
+    }
+
+    .bar.b1 { top: 4px;  background: var(--c1); opacity: 0.55; }
+    .bar.b2 { top: 17px; background: var(--c2); opacity: 0.55; }
+
+    .ov-band {
+      position: absolute;
+      top: 0; bottom: 0;
+      background: var(--ov-bg);
+      border-left:  2px solid var(--ov-border);
+      border-right: 2px solid var(--ov-border);
+    }
+
+    .times {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .tw { display: inline-block; margin-right: 8px; }
+    .tw::before { content: '↔ '; color: var(--ov); }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1 class="page-title">Design Team Pairings · Aug / Sept</h1>
+  <p class="page-sub">19 pairs · Timeline shown in UTC · Orange band = overlap window</p>
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#0ea5e9;opacity:.6"></div>
+      Person 1 (reaches out first)
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#8b5cf6;opacity:.6"></div>
+      Person 2
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:rgba(249,115,22,.45)"></div>
+      Overlap window
+    </div>
+  </div>
+</header>
+
+<section class="finder">
+  <div class="finder-label">Find your pairing</div>
+  <div class="pair-list" id="pair-list"></div>
+</section>
+
+<main class="grid" id="grid"></main>
+
+<footer>Hudl Design · Aug / Sept 2026</footer>
 
 <script>
-const S = 360, E = 1380, R = E - S;
-const p = m => ((m - S) / R * 100).toFixed(2) + '%';
-const w = (a,b) => ((b - a) / R * 100).toFixed(2) + '%';
+  const S = 360, E = 1380, R = E - S;
+  const pct  = m => ((m - S) / R * 100).toFixed(2) + '%';
+  const wPct = (a, b) => ((b - a) / R * 100).toFixed(2) + '%';
 
-const data = [
-  { id:1,  p1:{n:"Rich Vaughan",         tz:"BST",  s:480, e:1050},
-           p2:{n:"Ethan Grove",           tz:"ET",   s:720, e:1290},
-           t:["ET: 8:00 AM – 1:30 PM","BST: 1:00 PM – 6:30 PM"] },
-  { id:2,  p1:{n:"Christina Gibbons",    tz:"ET",   s:720, e:1260},
-           p2:{n:"Yanni Xiang",           tz:"CT",   s:780, e:1350},
-           t:["CT: 8:00 AM – 4:00 PM","ET: 9:00 AM – 5:00 PM"] },
-  { id:3,  p1:{n:"Abigail Ramirez-Kumar",tz:"CT",   s:780, e:1260},
-           p2:{n:"Nermeen Atef",          tz:"UTC+3",s:420, e:900 },
-           t:["CT: 8:00 AM – 10:00 AM","UTC+3: 4:00 PM – 6:00 PM"] },
-  { id:4,  p1:{n:"Shannon Partlow",      tz:"CT",   s:780, e:1320},
-           p2:{n:"Hayden Ohmes",          tz:"CT",   s:780, e:1350},
-           t:["CT: 8:00 AM – 5:00 PM"] },
-  { id:5,  p1:{n:"Craig Zheng",          tz:"ET",   s:720, e:1290},
-           p2:{n:"Richard Malachowski",   tz:"CEST", s:360, e:930 },
-           t:["ET: 8:00 AM – 11:30 AM","CEST: 2:00 PM – 5:30 PM"] },
-  { id:6,  p1:{n:"Holly Nicol",          tz:"BST",  s:480, e:990 },
-           p2:{n:"Charlotte Bevan",       tz:"BST",  s:420, e:990 },
-           t:["BST: 9:00 AM – 5:30 PM"] },
-  { id:7,  p1:{n:"Andy Lang",            tz:"BST",  s:420, e:990 },
-           p2:{n:"Jason McKelvey",        tz:"CT",   s:780, e:1350},
-           t:["CT: 8:00 AM – 11:30 AM","BST: 2:00 PM – 5:30 PM"] },
-  { id:8,  p1:{n:"Matt Allison",         tz:"BST",  s:480, e:990 },
-           p2:{n:"Tim Damitz",            tz:"ET",   s:720, e:1290},
-           t:["ET: 8:00 AM – 12:30 PM","BST: 1:00 PM – 5:30 PM"] },
-  { id:9,  p1:{n:"Amanda Jahn",          tz:"GMT",  s:510, e:1050},
-           p2:{n:"James Orbell",          tz:"BST",  s:420, e:990 },
-           t:["GMT: 8:30 AM – 4:30 PM","BST: 9:30 AM – 5:30 PM"] },
-  { id:10, p1:{n:"Qa'id Jacobs",         tz:"CET",  s:480, e:960 },
-           p2:{n:"Charlie Nolan",         tz:"BST",  s:420, e:990 },
-           t:["BST: 9:00 AM – 5:00 PM","CET: 9:00 AM – 5:00 PM"] },
-  { id:11, p1:{n:"Dana Krueger",         tz:"CT",   s:750, e:1260},
-           p2:{n:"Vicki Anderson",        tz:"BST",  s:420, e:990 },
-           t:["CT: 7:30 AM – 11:30 AM","BST: 1:30 PM – 5:30 PM"] },
-  { id:12, p1:{n:"Elissa Murray",        tz:"ET",   s:780, e:1260},
-           p2:{n:"Nicole Rosolin",        tz:"CEST", s:360, e:930 },
-           t:["ET: 9:00 AM – 11:30 AM","CEST: 3:00 PM – 5:30 PM"] },
-  { id:13, p1:{n:"Sergio Riquelme",      tz:"BST",  s:480, e:990 },
-           p2:{n:"Renana Toren",          tz:"BST",  s:420, e:990 },
-           t:["BST: 9:00 AM – 5:30 PM"] },
-  { id:14, p1:{n:"David Kinoranyi",      tz:"CET",  s:510, e:1020},
-           p2:{n:"Kyle Gibbings",         tz:"BST",  s:480, e:960 },
-           t:["BST: 9:30 AM – 5:00 PM","CET: 9:30 AM – 5:00 PM"] },
-  { id:15, p1:{n:"Dan Hassenplug",       tz:"CT",   s:780, e:1350},
-           p2:{n:"Luis Cantón",           tz:"CEST", s:360, e:930 },
-           t:["CT: 8:00 AM – 10:30 AM","CEST: 3:00 PM – 5:30 PM"] },
-  { id:16, p1:{n:"Hannah Monk",          tz:"CT",   s:780, e:1350},
-           p2:{n:"Ale Cilea",             tz:"CEST", s:360, e:930 },
-           t:["CT: 8:00 AM – 10:30 AM","CEST: 3:00 PM – 5:30 PM"] },
-  { id:17, p1:{n:"Mika Dael",            tz:"CEST", s:360, e:930 },
-           p2:{n:"Lea Sarris",            tz:"CT",   s:780, e:1350},
-           t:["CT: 8:00 AM – 10:30 AM","CEST: 3:00 PM – 5:30 PM"] },
-  { id:18, p1:{n:"Thomas McClure",       tz:"GMT",  s:540, e:1020},
-           p2:{n:"Elizabeth Renda",       tz:"ET",   s:720, e:1290},
-           t:["ET: 8:00 AM – 1:00 PM","GMT: 12:00 PM – 5:00 PM"] },
-  { id:19, p1:{n:"Carly Kendeigh",       tz:"CT",   s:720, e:1260},
-           p2:{n:"Aakriti Chandra",       tz:"ET",   s:720, e:1290},
-           t:["CT: 7:00 AM – 4:00 PM","ET: 8:00 AM – 5:00 PM"] },
-];
+  const pairs = [
+    { id:1,  p1:{n:"Abigail Ramirez-Kumar", tz:"CT",    s:780, e:1260},
+             p2:{n:"Nermeen Atef",           tz:"UTC+3", s:420, e:900 },
+             t:["CT: 8:00 AM – 10:00 AM","UTC+3: 4:00 PM – 6:00 PM"] },
+    { id:2,  p1:{n:"Amanda Jahn",           tz:"GMT",   s:510, e:1050},
+             p2:{n:"James Orbell",           tz:"BST",   s:420, e:990 },
+             t:["GMT: 8:30 AM – 4:30 PM","BST: 9:30 AM – 5:30 PM"] },
+    { id:3,  p1:{n:"Andy Lang",             tz:"BST",   s:420, e:990 },
+             p2:{n:"Jason McKelvey",         tz:"CT",    s:780, e:1350},
+             t:["CT: 8:00 AM – 11:30 AM","BST: 2:00 PM – 5:30 PM"] },
+    { id:4,  p1:{n:"Carly Kendeigh",        tz:"CT",    s:720, e:1260},
+             p2:{n:"Aakriti Chandra",        tz:"ET",    s:720, e:1290},
+             t:["CT: 7:00 AM – 4:00 PM","ET: 8:00 AM – 5:00 PM"] },
+    { id:5,  p1:{n:"Christina Gibbons",     tz:"ET",    s:720, e:1260},
+             p2:{n:"Yanni Xiang",            tz:"CT",    s:780, e:1350},
+             t:["CT: 8:00 AM – 4:00 PM","ET: 9:00 AM – 5:00 PM"] },
+    { id:6,  p1:{n:"Craig Zheng",           tz:"ET",    s:720, e:1290},
+             p2:{n:"Richard Malachowski",    tz:"CEST",  s:360, e:930 },
+             t:["ET: 8:00 AM – 11:30 AM","CEST: 2:00 PM – 5:30 PM"] },
+    { id:7,  p1:{n:"Dan Hassenplug",        tz:"CT",    s:780, e:1350},
+             p2:{n:"Luis Cantón",            tz:"CEST",  s:360, e:930 },
+             t:["CT: 8:00 AM – 10:30 AM","CEST: 3:00 PM – 5:30 PM"] },
+    { id:8,  p1:{n:"Dana Krueger",          tz:"CT",    s:750, e:1260},
+             p2:{n:"Vicki Anderson",         tz:"BST",   s:420, e:990 },
+             t:["CT: 7:30 AM – 11:30 AM","BST: 1:30 PM – 5:30 PM"] },
+    { id:9,  p1:{n:"David Kinoranyi",       tz:"CET",   s:510, e:1020},
+             p2:{n:"Kyle Gibbings",          tz:"BST",   s:480, e:960 },
+             t:["BST: 9:30 AM – 5:00 PM","CET: 9:30 AM – 5:00 PM"] },
+    { id:10, p1:{n:"Elissa Murray",         tz:"ET",    s:780, e:1260},
+             p2:{n:"Nicole Rosolin",         tz:"CEST",  s:360, e:930 },
+             t:["ET: 9:00 AM – 11:30 AM","CEST: 3:00 PM – 5:30 PM"] },
+    { id:11, p1:{n:"Hannah Monk",           tz:"CT",    s:780, e:1350},
+             p2:{n:"Ale Cilea",              tz:"CEST",  s:360, e:930 },
+             t:["CT: 8:00 AM – 10:30 AM","CEST: 3:00 PM – 5:30 PM"] },
+    { id:12, p1:{n:"Holly Nicol",           tz:"BST",   s:480, e:990 },
+             p2:{n:"Charlotte Bevan",        tz:"BST",   s:420, e:990 },
+             t:["BST: 9:00 AM – 5:30 PM"] },
+    { id:13, p1:{n:"Matt Allison",          tz:"BST",   s:480, e:990 },
+             p2:{n:"Tim Damitz",             tz:"ET",    s:720, e:1290},
+             t:["ET: 8:00 AM – 12:30 PM","BST: 1:00 PM – 5:30 PM"] },
+    { id:14, p1:{n:"Mika Dael",             tz:"CEST",  s:360, e:930 },
+             p2:{n:"Lea Sarris",             tz:"CT",    s:780, e:1350},
+             t:["CT: 8:00 AM – 10:30 AM","CEST: 3:00 PM – 5:30 PM"] },
+    { id:15, p1:{n:"Qa'id Jacobs",          tz:"CET",   s:480, e:960 },
+             p2:{n:"Charlie Nolan",          tz:"BST",   s:420, e:990 },
+             t:["BST: 9:00 AM – 5:00 PM","CET: 9:00 AM – 5:00 PM"] },
+    { id:16, p1:{n:"Rich Vaughan",          tz:"BST",   s:480, e:1050},
+             p2:{n:"Ethan Grove",            tz:"ET",    s:720, e:1290},
+             t:["ET: 8:00 AM – 1:30 PM","BST: 1:00 PM – 6:30 PM"] },
+    { id:17, p1:{n:"Sergio Riquelme",       tz:"BST",   s:480, e:990 },
+             p2:{n:"Renana Toren",           tz:"BST",   s:420, e:990 },
+             t:["BST: 9:00 AM – 5:30 PM"] },
+    { id:18, p1:{n:"Shannon Partlow",       tz:"CT",    s:780, e:1320},
+             p2:{n:"Hayden Ohmes",           tz:"CT",    s:780, e:1350},
+             t:["CT: 8:00 AM – 5:00 PM"] },
+    { id:19, p1:{n:"Thomas McClure",        tz:"GMT",   s:540, e:1020},
+             p2:{n:"Elizabeth Renda",        tz:"ET",    s:720, e:1290},
+             t:["ET: 8:00 AM – 1:00 PM","GMT: 12:00 PM – 5:00 PM"] },
+  ];
 
-const axLabels = [{h:6,l:'6a'},{h:8,l:'8a'},{h:10,l:'10a'},{h:12,l:'12p'},{h:14,l:'2p'},{h:16,l:'4p'},{h:18,l:'6p'},{h:20,l:'8p'},{h:22,l:'10p'}];
-const grid = document.getElementById('grid');
+  const axLabels = ['6a','8a','10a','12p','2p','4p','6p','8p','10p'];
+  const grid     = document.getElementById('grid');
+  const pairList = document.getElementById('pair-list');
+  const cards    = [];
+  const btns     = [];
+  let   active   = null;
 
-data.forEach(d => {
-  const os = Math.max(d.p1.s, d.p2.s);
-  const oe = Math.min(d.p1.e, d.p2.e);
-  const hrs = (oe - os) / 60;
-  const hLabel = Number.isInteger(hrs) ? hrs + 'h' : hrs.toFixed(1) + 'h';
+  function selectPair(idx) {
+    // Deselect if clicking active
+    if (active === idx) {
+      cards.forEach(c => c.classList.remove('highlighted', 'dimmed'));
+      btns.forEach(b => b.classList.remove('active'));
+      active = null;
+      return;
+    }
+    active = idx;
+    cards.forEach((c, i) => {
+      c.classList.toggle('highlighted', i === idx);
+      c.classList.toggle('dimmed',      i !== idx);
+    });
+    btns.forEach((b, i) => b.classList.toggle('active', i === idx));
+    cards[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 
-  const axHTML = axLabels.map(a => `<span class="ax">${a.l}</span>`).join('');
-  const tHTML = d.t.map(t => `<span class="tw">${t}</span>`).join('');
+  pairs.forEach((d, idx) => {
+    const os = Math.max(d.p1.s, d.p2.s);
+    const oe = Math.min(d.p1.e, d.p2.e);
+    const hrs = (oe - os) / 60;
+    const hLabel = Number.isInteger(hrs) ? hrs + 'h' : hrs.toFixed(1) + 'h';
+    const hNum   = Number.isInteger(hrs) ? hrs : hrs.toFixed(1);
+    const outlookUrl = `https://outlook.office.com/calendar/action/compose?subject=${encodeURIComponent('Coffee Chat: ' + d.p1.n + ' & ' + d.p2.n)}`;
 
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.innerHTML = `
-    <div class="card-top">
-      <span class="pair-num">${d.id}</span>
-      <div class="names">
-        <div class="name-row"><span class="name">${d.p1.n}</span><span class="tz t1">${d.p1.tz}</span></div>
-        <div class="name-row"><span class="name dim">${d.p2.n}</span><span class="tz t2">${d.p2.tz}</span></div>
+    // ── Finder button ──
+    const btn = document.createElement('button');
+    btn.className = 'pair-btn';
+    btn.innerHTML = `<span class="pb-name1">${d.p1.n}</span><span class="pb-name2">${d.p2.n}</span>`;
+    btn.addEventListener('click', () => selectPair(idx));
+    pairList.appendChild(btn);
+    btns.push(btn);
+
+    // ── Timeline card ──
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-top">
+        <span class="pair-num">${d.id}</span>
+        <div class="names">
+          <div class="name-row">
+            <span class="name">${d.p1.n}</span>
+            <span class="tz t1">${d.p1.tz}</span>
+          </div>
+          <div class="name-row">
+            <span class="name dim">${d.p2.n}</span>
+            <span class="tz t2">${d.p2.tz}</span>
+          </div>
+        </div>
+        <span class="pill">Approx. ${hNum}h overlap</span>
+        <a class="outlook-btn" href="${outlookUrl}" target="_blank" title="Create Outlook calendar invite" onclick="event.stopPropagation()">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2.5" y="4.5" width="15" height="13" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M2.5 8.5h15" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M6.5 2.5v4M13.5 2.5v4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M6 12h3M6 14.5h5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </a>
       </div>
-      <span class="pill">${hLabel}</span>
-    </div>
-    <div class="axis">${axHTML}</div>
-    <div class="track">
-      <div class="bar b1" style="left:${p(d.p1.s)};width:${w(d.p1.s,d.p1.e)}"></div>
-      <div class="bar b2" style="left:${p(d.p2.s)};width:${w(d.p2.s,d.p2.e)}"></div>
-      <div class="ov" style="left:${p(os)};width:${w(os,oe)}"></div>
-    </div>
-    <div class="times">${tHTML}</div>`;
-  grid.appendChild(card);
-});
+      <div class="axis">${axLabels.map(l => `<span class="ax">${l}</span>`).join('')}</div>
+      <div class="track">
+        <div class="bar b1" style="left:${pct(d.p1.s)};width:${wPct(d.p1.s,d.p1.e)}"></div>
+        <div class="bar b2" style="left:${pct(d.p2.s)};width:${wPct(d.p2.s,d.p2.e)}"></div>
+        <div class="ov-band" style="left:${pct(os)};width:${wPct(os,oe)}"></div>
+      </div>
+      <div class="times">${d.t.map(t => `<span class="tw">${t}</span>`).join('')}</div>
+    `;
+    card.addEventListener('click', () => selectPair(idx));
+    grid.appendChild(card);
+    cards.push(card);
+  });
 </script>
+</body>
+</html>
