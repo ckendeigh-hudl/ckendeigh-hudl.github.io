@@ -8,31 +8,31 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:          #f4f5f7;
-      --surface:     #ffffff;
-      --border:      #e2e5ea;
-      --text:        #1a1d23;
-      --muted:       #6b7280;
-      --track:       #eef0f3;
-      --c1:          #0ea5e9;
-      --c2:          #8b5cf6;
-      --ov:          #f97316;
-      --ov-bg:       rgba(249,115,22,.12);
-      --ov-border:   rgba(249,115,22,.5);
+      --bg:          #F9FAFB;
+      --surface:     #FFFFFF;
+      --border:      #EDF0F2;
+      --text:        #232A31;
+      --muted:       #4E5D6C;
+      --track:       #EDF0F2;
+      --c1:          #0A93F5;
+      --c2:          #38434F;
+      --ov:          #FF6300;
+      --ov-bg:       rgba(255,99,0,.10);
+      --ov-border:   rgba(255,99,0,.45);
       --shadow:      0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.05);
-      --shadow-hi:   0 0 0 3px rgba(249,115,22,.2), 0 4px 16px rgba(249,115,22,.15);
+      --shadow-hi:   0 0 0 3px rgba(255,99,0,.2), 0 4px 16px rgba(255,99,0,.15);
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg:       #0f1117;
-        --surface:  #1a1d23;
-        --border:   #2a2f3a;
-        --text:     #f1f3f6;
-        --muted:    #8892a0;
-        --track:    #12151c;
+        --bg:       #101417;
+        --surface:  #191F24;
+        --border:   #232A31;
+        --text:     #F9FAFB;
+        --muted:    #4E5D6C;
+        --track:    #232A31;
         --shadow:   0 1px 3px rgba(0,0,0,.4);
-        --shadow-hi:0 0 0 3px rgba(249,115,22,.25), 0 4px 16px rgba(249,115,22,.2);
+        --shadow-hi:0 0 0 3px rgba(255,99,0,.25), 0 4px 16px rgba(255,99,0,.2);
       }
     }
 
@@ -126,7 +126,7 @@
     .pair-btn.active {
       border-color: var(--ov);
       background: var(--ov-bg);
-      box-shadow: 0 0 0 2px rgba(249,115,22,.15);
+      box-shadow: 0 0 0 2px rgba(255,99,0,.15);
     }
 
     .pb-name1 {
@@ -257,8 +257,8 @@
       flex-shrink: 0;
     }
 
-    .tz.t1 { background: rgba(14,165,233,.12); color: #0ea5e9; }
-    .tz.t2 { background: rgba(139,92,246,.12); color: #8b5cf6; }
+    .tz.t1 { background: rgba(10,147,245,.12); color: #0A93F5; }
+    .tz.t2 { background: rgba(56,67,79,.14);   color: #38434F; }
 
     .pill {
       font-size: 11px;
@@ -272,11 +272,22 @@
     }
 
     /* ── Timeline ── */
+    .tl-group { margin-bottom: 8px; }
+
+    .tl-axrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .tl-spacer { width: 88px; flex-shrink: 0; }
+
     .axis {
       display: flex;
       justify-content: space-between;
       padding: 0 1px;
-      margin-bottom: 3px;
+      flex: 1;
     }
 
     .ax {
@@ -285,23 +296,49 @@
       opacity: 0.6;
     }
 
-    .track {
-      position: relative;
-      height: 30px;
-      background: var(--track);
-      border-radius: 6px;
+    .tl-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .tl-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      width: 88px;
+      flex-shrink: 0;
+    }
+
+    .tl-name {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
       overflow: hidden;
-      margin-bottom: 9px;
+      text-overflow: ellipsis;
+      max-width: 52px;
+    }
+
+    .tl-track {
+      position: relative;
+      flex: 1;
+      height: 12px;
+      background: var(--track);
+      border-radius: 4px;
+      overflow: hidden;
     }
 
     .bar {
       position: absolute;
-      height: 9px;
+      top: 0;
+      height: 100%;
       border-radius: 3px;
     }
 
-    .bar.b1 { top: 4px;  background: var(--c1); opacity: 0.55; }
-    .bar.b2 { top: 17px; background: var(--c2); opacity: 0.55; }
+    .bar.b1 { background: var(--c1); opacity: 0.65; }
+    .bar.b2 { background: var(--c2); opacity: 0.65; }
 
     .ov-band {
       position: absolute;
@@ -332,37 +369,41 @@
 <body>
 
 <header class="page-header">
-  <h1 class="page-title">Design Team Pairings · Aug / Sept</h1>
-  <p class="page-sub">19 pairs · Timeline shown in UTC · Orange band = overlap window</p>
+  <h1 class="page-title">☕ Design Team Coffee Chats · Aug / Sept</h1>
+  <p class="page-sub">19 pairs · Grab a coffee and catch up! · Orange band = your sweet spot overlap</p>
   <div class="legend">
     <div class="legend-item">
-      <div class="legend-swatch" style="background:#0ea5e9;opacity:.6"></div>
-      Person 1 (reaches out first)
+      <div class="legend-swatch" style="background:#0A93F5;opacity:.7"></div>
+      Person 1 (reaches out first ☕)
     </div>
     <div class="legend-item">
-      <div class="legend-swatch" style="background:#8b5cf6;opacity:.6"></div>
+      <div class="legend-swatch" style="background:#38434F;opacity:.7"></div>
       Person 2
     </div>
     <div class="legend-item">
       <div class="legend-swatch" style="background:rgba(249,115,22,.45)"></div>
-      Overlap window
+      Best time to meet
     </div>
   </div>
 </header>
 
 <section class="finder">
-  <div class="finder-label">Find your pairing</div>
+  <div class="finder-label">☕ Find your coffee chat</div>
   <div class="pair-list" id="pair-list"></div>
 </section>
 
 <main class="grid" id="grid"></main>
 
-<footer>Hudl Design · Aug / Sept 2026</footer>
+<footer>Hudl Design · Aug / Sept 2026 · Happy chatting! ☕</footer>
 
 <script>
   const S = 360, E = 1380, R = E - S;
   const pct  = m => ((m - S) / R * 100).toFixed(2) + '%';
   const wPct = (a, b) => ((b - a) / R * 100).toFixed(2) + '%';
+
+  const tzOff = {BST:60,GMT:0,ET:-240,EDT:-240,CT:-300,CDT:-300,CEST:120,CET:60,'UTC+3':180};
+  function fmtMin(m){m=((m%1440)+1440)%1440;const h=Math.floor(m/60),ap=h<12?'a':'p',h12=h%12||12;return h12+ap;}
+  function axisFor(tz){const o=tzOff[tz]||0;return[360,480,600,720,840,960,1080,1200,1320].map(m=>`<span class="ax">${fmtMin(m+o)}</span>`).join('');}
 
   const pairs = [
     { id:1,  p1:{n:"Abigail Ramirez-Kumar", tz:"CT",    s:780, e:1260},
@@ -459,7 +500,7 @@
     // ── Finder button ──
     const btn = document.createElement('button');
     btn.className = 'pair-btn';
-    btn.innerHTML = `<span class="pb-name1">${d.p1.n}</span><span class="pb-name2">${d.p2.n}</span>`;
+    btn.innerHTML = `<span class="pb-name1">☕ ${d.p1.n}</span><span class="pb-name2">${d.p2.n}</span>`;
     btn.addEventListener('click', () => selectPair(idx));
     pairList.appendChild(btn);
     btns.push(btn);
@@ -490,11 +531,37 @@
           </svg>
         </a>
       </div>
-      <div class="axis">${axLabels.map(l => `<span class="ax">${l}</span>`).join('')}</div>
-      <div class="track">
-        <div class="bar b1" style="left:${pct(d.p1.s)};width:${wPct(d.p1.s,d.p1.e)}"></div>
-        <div class="bar b2" style="left:${pct(d.p2.s)};width:${wPct(d.p2.s,d.p2.e)}"></div>
-        <div class="ov-band" style="left:${pct(os)};width:${wPct(os,oe)}"></div>
+      <div class="tl-group">
+        <div class="tl-axrow">
+          <div class="tl-spacer"></div>
+          <div class="axis">${axisFor(d.p1.tz)}</div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-label">
+            <span class="tl-name">${d.p1.n.split(' ')[0]}</span>
+            <span class="tz t1">${d.p1.tz}</span>
+          </div>
+          <div class="tl-track">
+            <div class="bar b1" style="left:${pct(d.p1.s)};width:${wPct(d.p1.s,d.p1.e)}"></div>
+            <div class="ov-band" style="left:${pct(os)};width:${wPct(os,oe)}"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tl-group">
+        <div class="tl-axrow">
+          <div class="tl-spacer"></div>
+          <div class="axis">${axisFor(d.p2.tz)}</div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-label">
+            <span class="tl-name">${d.p2.n.split(' ')[0]}</span>
+            <span class="tz t2">${d.p2.tz}</span>
+          </div>
+          <div class="tl-track">
+            <div class="bar b2" style="left:${pct(d.p2.s)};width:${wPct(d.p2.s,d.p2.e)}"></div>
+            <div class="ov-band" style="left:${pct(os)};width:${wPct(os,oe)}"></div>
+          </div>
+        </div>
       </div>
       <div class="times">${d.t.map(t => `<span class="tw">${t}</span>`).join('')}</div>
     `;
