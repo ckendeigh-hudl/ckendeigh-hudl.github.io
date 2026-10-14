@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Design Team Pairings · Oct / Nov</title>
+  <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/2615.png">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -126,7 +127,7 @@
 
 <header class="page-header">
   <h1 class="page-title">&#9749; Design Team Coffee Chats &middot; Oct / Nov</h1>
-  <p class="page-sub">18 pairs &middot; Grab a coffee and catch up! &middot; Orange band = your sweet spot overlap &middot; Odd one out: Carly Kendeigh (next round priority)</p>
+  <p class="page-sub">18 pairs &middot; Grab a coffee and catch up! &middot; Orange band = your sweet spot overlap</p>
   <div class="legend">
     <div class="legend-item">
       <div class="legend-swatch" style="background:#0A93F5;opacity:.7"></div>
@@ -153,36 +154,36 @@
 <footer>Hudl Design &middot; Oct / Nov 2026 &middot; Happy chatting! &#9749;</footer>
 
 <script>
-  const S = 360, E = 1380, R = E - S;
-  const pct  = m => ((m - S) / R * 100).toFixed(2) + '%';
-  const wPct = (a, b) => ((b - a) / R * 100).toFixed(2) + '%';
+  var S = 360, E = 1380, R = E - S;
+  function pct(m)  { return ((m - S) / R * 100).toFixed(2) + '%'; }
+  function wPct(a,b){ return ((b - a) / R * 100).toFixed(2) + '%'; }
 
-  const tzOff = {BST:60,GMT:0,ET:-240,EDT:-240,CT:-300,CDT:-300,CEST:120,CET:60,'UTC+3':180};
-  function fmtMin(m){m=((m%1440)+1440)%1440;const h=Math.floor(m/60),ap=h<12?'a':'p',h12=h%12||12;return h12+ap;}
-  function axisFor(tz){const o=tzOff[tz]||0;return[360,480,600,720,840,960,1080,1200,1320].map(m=>'<span class="ax">'+fmtMin(m+o)+'</span>').join('');}
+  var tzOff = {BST:60,GMT:0,ET:-240,EDT:-240,CT:-300,CDT:-300,CEST:120,CET:60,'UTC+3':180};
+  function fmtMin(m){m=((m%1440)+1440)%1440;var h=Math.floor(m/60),ap=h<12?'a':'p',h12=h%12||12;return h12+ap;}
+  function axisFor(tz){var o=tzOff[tz]||0;return[360,480,600,720,840,960,1080,1200,1320].map(function(m){return'<span class="ax">'+fmtMin(m+o)+'</span>';}).join('');}
 
   // Oct/Nov 2026 — 18 pairs, sorted A-Z by p1 first name
   // p1 = reaches out first (swapped from last month where possible)
-  // Odd one out: Carly Kendeigh (priority next round)
+  // Yanni Xiang on parental leave — no odd one out this round
   var pairs = [
     { id:1,  p1:{n:"Aakriti Chandra",        tz:"ET",    s:720,  e:1290}, p2:{n:"Jason McKelvey",        tz:"CT",    s:780,  e:1350}, t:["ET: 9:00 AM - 5:30 PM","CT: 8:00 AM - 4:30 PM"] },
     { id:2,  p1:{n:"Ale Cilea",               tz:"CEST",  s:360,  e:930 }, p2:{n:"Nicole Rosolin",        tz:"CEST",  s:360,  e:930 }, t:["CEST: 8:00 AM - 5:30 PM"] },
-    { id:3,  p1:{n:"Charlie Nolan",           tz:"BST",   s:420,  e:990 }, p2:{n:"David Kinoranyi",       tz:"CET",   s:510,  e:1020}, t:["BST: 9:30 AM - 5:30 PM","CET: 9:30 AM - 5:30 PM"] },
-    { id:4,  p1:{n:"Charlotte Bevan",         tz:"BST",   s:420,  e:990 }, p2:{n:"Nermeen Atef",          tz:"UTC+3", s:420,  e:900 }, t:["BST: 8:00 AM - 4:00 PM","UTC+3: 10:00 AM - 6:00 PM"] },
-    { id:5,  p1:{n:"Dana Krueger",            tz:"CT",    s:750,  e:1260}, p2:{n:"Qa'id Jacobs",          tz:"CET",   s:480,  e:960 }, t:["CT: 7:30 AM - 11:00 AM","CET: 1:30 PM - 5:00 PM"] },
-    { id:6,  p1:{n:"Elizabeth Renda",         tz:"ET",    s:720,  e:1290}, p2:{n:"Dan Hassenplug",        tz:"CT",    s:780,  e:1350}, t:["ET: 9:00 AM - 5:30 PM","CT: 8:00 AM - 4:30 PM"] },
-    { id:7,  p1:{n:"Ethan Grove",             tz:"ET",    s:720,  e:1290}, p2:{n:"Holly Nicol",           tz:"BST",   s:480,  e:990 }, t:["ET: 8:00 AM - 12:30 PM","BST: 1:00 PM - 5:30 PM"] },
-    { id:8,  p1:{n:"Hayden Ohmes",            tz:"CT",    s:780,  e:1350}, p2:{n:"Mika Dael",             tz:"CEST",  s:360,  e:930 }, t:["CT: 8:00 AM - 10:30 AM","CEST: 3:00 PM - 5:30 PM"] },
-    { id:9,  p1:{n:"James Orbell",            tz:"BST",   s:420,  e:990 }, p2:{n:"Christina Gibbons",     tz:"ET",    s:720,  e:1260}, t:["BST: 1:00 PM - 5:30 PM","ET: 8:00 AM - 12:30 PM"] },
-    { id:10, p1:{n:"Kyle Gibbings",           tz:"BST",   s:480,  e:960 }, p2:{n:"Andy Lang",             tz:"BST",   s:420,  e:990 }, t:["BST: 9:00 AM - 5:00 PM"] },
-    { id:11, p1:{n:"Lea Sarris",              tz:"CT",    s:780,  e:1350}, p2:{n:"Amanda Jahn",           tz:"GMT",   s:510,  e:1050}, t:["CT: 8:00 AM - 12:30 PM","GMT: 1:00 PM - 5:30 PM"] },
-    { id:12, p1:{n:"Luis Canton",             tz:"CEST",  s:360,  e:930 }, p2:{n:"Craig Zheng",           tz:"ET",    s:720,  e:1290}, t:["ET: 8:00 AM - 11:30 AM","CEST: 2:00 PM - 5:30 PM"] },
-    { id:13, p1:{n:"Renana Toren",            tz:"BST",   s:420,  e:990 }, p2:{n:"Thomas McClure",        tz:"GMT",   s:540,  e:1020}, t:["BST: 10:00 AM - 5:30 PM","GMT: 9:00 AM - 4:30 PM"] },
-    { id:14, p1:{n:"Rich Vaughan",            tz:"BST",   s:480,  e:1050}, p2:{n:"Sergio Riquelme",       tz:"BST",   s:480,  e:990 }, t:["BST: 9:00 AM - 5:30 PM"] },
-    { id:15, p1:{n:"Richard Malachowski",     tz:"CEST",  s:360,  e:930 }, p2:{n:"Shannon Partlow",       tz:"CT",    s:780,  e:1320}, t:["CT: 8:00 AM - 10:30 AM","CEST: 3:00 PM - 5:30 PM"] },
-    { id:16, p1:{n:"Tim Damitz",              tz:"ET",    s:720,  e:1290}, p2:{n:"Hannah Monk",           tz:"CT",    s:780,  e:1350}, t:["ET: 9:00 AM - 5:30 PM","CT: 8:00 AM - 4:30 PM"] },
-    { id:17, p1:{n:"Vicki Anderson",          tz:"BST",   s:420,  e:990 }, p2:{n:"Elissa Murray",         tz:"ET",    s:780,  e:1260}, t:["BST: 2:00 PM - 5:30 PM","ET: 9:00 AM - 12:30 PM"] },
-    { id:18, p1:{n:"Yanni Xiang",             tz:"CT",    s:780,  e:1350}, p2:{n:"Abigail Ramirez-Kumar", tz:"CT",    s:780,  e:1260}, t:["CT: 8:00 AM - 4:00 PM"] }
+    { id:3,  p1:{n:"Carly Kendeigh",          tz:"CT",    s:720,  e:1260}, p2:{n:"Christina Gibbons",     tz:"ET",    s:720,  e:1260}, t:["CT: 7:00 AM - 4:00 PM","ET: 8:00 AM - 5:00 PM"] },
+    { id:4,  p1:{n:"Charlie Nolan",           tz:"BST",   s:420,  e:990 }, p2:{n:"David Kinoranyi",       tz:"CET",   s:510,  e:1020}, t:["BST: 9:30 AM - 5:30 PM","CET: 9:30 AM - 5:30 PM"] },
+    { id:5,  p1:{n:"Charlotte Bevan",         tz:"BST",   s:420,  e:990 }, p2:{n:"Nermeen Atef",          tz:"UTC+3", s:420,  e:900 }, t:["BST: 8:00 AM - 4:00 PM","UTC+3: 10:00 AM - 6:00 PM"] },
+    { id:6,  p1:{n:"Dana Krueger",            tz:"CT",    s:750,  e:1260}, p2:{n:"Qa'id Jacobs",          tz:"CET",   s:480,  e:960 }, t:["CT: 7:30 AM - 11:00 AM","CET: 1:30 PM - 5:00 PM"] },
+    { id:7,  p1:{n:"Elizabeth Renda",         tz:"ET",    s:720,  e:1290}, p2:{n:"Dan Hassenplug",        tz:"CT",    s:780,  e:1350}, t:["ET: 9:00 AM - 5:30 PM","CT: 8:00 AM - 4:30 PM"] },
+    { id:8,  p1:{n:"Ethan Grove",             tz:"ET",    s:720,  e:1290}, p2:{n:"Holly Nicol",           tz:"BST",   s:480,  e:990 }, t:["ET: 8:00 AM - 12:30 PM","BST: 1:00 PM - 5:30 PM"] },
+    { id:9,  p1:{n:"Hayden Ohmes",            tz:"CT",    s:780,  e:1350}, p2:{n:"Mika Dael",             tz:"CEST",  s:360,  e:930 }, t:["CT: 8:00 AM - 10:30 AM","CEST: 3:00 PM - 5:30 PM"] },
+    { id:10, p1:{n:"James Orbell",            tz:"BST",   s:420,  e:990 }, p2:{n:"Abigail Ramirez-Kumar", tz:"CT",    s:780,  e:1260}, t:["BST: 1:00 PM - 5:30 PM","CT: 8:00 AM - 11:30 AM"] },
+    { id:11, p1:{n:"Kyle Gibbings",           tz:"BST",   s:480,  e:960 }, p2:{n:"Andy Lang",             tz:"BST",   s:420,  e:990 }, t:["BST: 9:00 AM - 5:00 PM"] },
+    { id:12, p1:{n:"Lea Sarris",              tz:"CT",    s:780,  e:1350}, p2:{n:"Amanda Jahn",           tz:"GMT",   s:510,  e:1050}, t:["CT: 8:00 AM - 12:30 PM","GMT: 1:00 PM - 5:30 PM"] },
+    { id:13, p1:{n:"Luis Canton",             tz:"CEST",  s:360,  e:930 }, p2:{n:"Craig Zheng",           tz:"ET",    s:720,  e:1290}, t:["ET: 8:00 AM - 11:30 AM","CEST: 2:00 PM - 5:30 PM"] },
+    { id:14, p1:{n:"Renana Toren",            tz:"BST",   s:420,  e:990 }, p2:{n:"Thomas McClure",        tz:"GMT",   s:540,  e:1020}, t:["BST: 10:00 AM - 5:30 PM","GMT: 9:00 AM - 4:30 PM"] },
+    { id:15, p1:{n:"Rich Vaughan",            tz:"BST",   s:480,  e:1050}, p2:{n:"Sergio Riquelme",       tz:"BST",   s:480,  e:990 }, t:["BST: 9:00 AM - 5:30 PM"] },
+    { id:16, p1:{n:"Richard Malachowski",     tz:"CEST",  s:360,  e:930 }, p2:{n:"Shannon Partlow",       tz:"CT",    s:780,  e:1320}, t:["CT: 8:00 AM - 10:30 AM","CEST: 3:00 PM - 5:30 PM"] },
+    { id:17, p1:{n:"Tim Damitz",              tz:"ET",    s:720,  e:1290}, p2:{n:"Hannah Monk",           tz:"CT",    s:780,  e:1350}, t:["ET: 9:00 AM - 5:30 PM","CT: 8:00 AM - 4:30 PM"] },
+    { id:18, p1:{n:"Vicki Anderson",          tz:"BST",   s:420,  e:990 }, p2:{n:"Elissa Murray",         tz:"ET",    s:780,  e:1260}, t:["BST: 2:00 PM - 5:30 PM","ET: 9:00 AM - 12:30 PM"] }
   ];
 
   var grid     = document.getElementById('grid');
